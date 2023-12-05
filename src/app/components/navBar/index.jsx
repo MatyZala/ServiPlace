@@ -1,10 +1,13 @@
+'use client'
+
 import React from "react";
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Avatar } from "@nextui-org/react";
 import { AcmeLogo } from "./AcmeLogo.jsx";
 import ThemeSwitch from "./ThemeSwitch.jsx";
 import { useSession, signOut } from 'next-auth/react'
 
-export default async function NavBar() {
+
+export default function NavBar() {
     const { data: session, status } = useSession()
     return (
         <Navbar
@@ -47,11 +50,12 @@ export default async function NavBar() {
                             src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
                         />
                     </DropdownTrigger>
-                    <DropdownMenu aria-label="Profile Actions" variant="flat">
+                    {status === 'authenticated' && (<DropdownMenu aria-label="Profile Actions" variant="flat">
                         <DropdownItem key="profile" className="h-14 gap-2">
-                            <p className="font-semibold">Signed in as</p>
-                            <p className="font-semibold">zoey@example.com</p>
+                            <p className="font-semibold">Conectado como</p>
+                            <p className="font-semibold">{session?.user?.fullname}</p>
                         </DropdownItem>
+                        {status === 'authenticated' && <DropdownItem key="settings"></DropdownItem>}
                         <DropdownItem key="settings">My Settings</DropdownItem>
                         <DropdownItem key="team_settings">Team Settings</DropdownItem>
                         <DropdownItem key="analytics">Analytics</DropdownItem>
@@ -61,7 +65,13 @@ export default async function NavBar() {
                         <DropdownItem key="logout" color="danger" onClick={() => { signOut() }}>
                             Log Out
                         </DropdownItem>
-                    </DropdownMenu>
+                    </DropdownMenu>)}
+                    {status !== 'authenticated' && (<DropdownMenu aria-label="Profile Actions" variant="flat">
+
+                        <DropdownItem key="signin"><Link href="/login">Iniciar Sesión</Link></DropdownItem>
+                        <DropdownItem key="signin"><Link href="/register">Registrarse</Link></DropdownItem>
+
+                    </DropdownMenu>)}
                 </Dropdown>
             </NavbarContent>
         </Navbar>

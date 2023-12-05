@@ -19,9 +19,9 @@ const LoginContainer = () => {
             redirect: false
         })
 
-        if (res?.error) return setError(res.error)
+        if (response?.error) return setError(response.error)
 
-        if (res?.ok) return router.push("/")
+        if (response?.ok) return router.push("/")
 
     }
 

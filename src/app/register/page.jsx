@@ -22,12 +22,12 @@ const RegisterPage = () => {
             })
 
             const response = await signIn('credentials', {
-                email: res.data.email,
+                email: response.data.email,
                 password: FormData.get('password'),
                 redirect: false
             })
 
-            if (res?.ok) return router.push("/")
+            if (response?.ok) return router.push("/")
         } catch (error) {
             setError(error.response?.data.message)
         }
